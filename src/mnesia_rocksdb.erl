@@ -1060,7 +1060,7 @@ default_open_opts() ->
          list_to_integer(get_env_default(
                            "ROCKSDB_WRITE_BUFFER_SIZE", "4194304"))}
       , {compression,
-         list_to_atom(get_env_default("ROCKSDB_COMPRESSION", "true"))}
+         list_to_atom(get_env_default("ROCKSDB_COMPRESSION", "snappy"))}
       , {use_bloomfilter, true}
     ].
 
