@@ -9,14 +9,14 @@ jobs:
       fail-fast: false
       matrix:
         builder:
-          - 5.2-7:1.15.7-26.1.2-1
+          - 5.3-5:1.15.7-26.2.1-2
         os:
-          - ubuntu22.04
+          - ubuntu24.04
     runs-on: ubuntu-latest
     container: ghcr.io/emqx/emqx-builder/${{ matrix.builder }}-${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
         with:
           fetch-depth: 0
 
