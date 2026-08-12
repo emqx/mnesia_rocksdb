@@ -619,12 +619,20 @@ sender_handle_info(_Msg, _Alias, _Tab, _ReceiverPid, Cont) ->
     {chunk_fun(), Cont}.
 
 receiver_first_message(_Pid, {first, Size} = _Msg, _Alias, _Tab) ->
-    {Size, _State = []}.
+    {Size, need_clear}.
 
+receive_data(Data, Alias, Tab, Sender, need_clear) ->
+    call(Alias, Tab, clear_table),
+    receive_data(Data, Alias, Tab, Sender, normal);
 receive_data(Data, Alias, Tab, _Sender, State) ->
     [insert(Alias, Tab, Obj) || Obj <- Data],
     {more, State}.
 
+receive_done(Alias, Tab, _Sender, need_clear) ->
+    %% Special case that can happen when the upstream table is empty.
+    %% In this case `receive_data' is never called.
+    call(Alias, Tab, clear_table),
+    ok;
 receive_done(_Alias, _Tab, _Sender, _State) ->
     ok.
 
